@@ -10,8 +10,16 @@ import com.rpc.service.HelloService;
  **/
 @RpcService(version = 1)
 public class HelloServiceImpl1 implements HelloService {
+
+    int i = 1;
+
     @Override
     public String sayHello() {
-        return "hello easy rpc!11111111111111111111111";
+        return (i++) + "  hello easy rpc!11111111111111111111111";
+    }
+
+    @Override
+    public String sayHello(String str) {
+        return str + " hello easy rpc! 实现类1";
     }
 }

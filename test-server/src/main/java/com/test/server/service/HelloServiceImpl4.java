@@ -6,21 +6,22 @@ import com.rpc.service.HelloService;
 /**
  * @description:
  * @author: LHR
- * @date: 2024-03-12 09:15
+ * @date: 2024-03-16 21:45
  **/
 
-@RpcService(version = 0, fallback = FallbackHelloServiceImpl.class, retryTimes = 2, waitTime = 2, recover = 0)
-public class HelloServiceImpl implements HelloService {
+@RpcService(version = 3, fallback = FallbackHelloServiceImpl4.class, retryTimes = 2, waitTime = 2, recover = 15)
+public class HelloServiceImpl4 implements HelloService {
     @Override
     public String sayHello() {
+
         try {
             // 给我睡死
             Thread.sleep(Integer.MAX_VALUE);
-//            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "hello easy rpc!";
+
+        return "熔断测试 Hello 的正常输出";
     }
 
     @Override

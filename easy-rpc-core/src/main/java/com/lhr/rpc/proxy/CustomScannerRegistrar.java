@@ -40,7 +40,7 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     private int scanBeanPackages(AnnotationMetadata am, BeanDefinitionRegistry br, Class<? extends Annotation> relateClazz, String... packagesPaths) {
         int count = 0;
-        if (am.hasAnnotation(RpcServiceEnable.class.getName())) {
+        if (am.hasAnnotation(EnableRpcService.class.getName())) {
             CustomScanner rpcServiceScanner = new CustomScanner(br, relateClazz);
             if (resourceLoader != null) {
                 rpcServiceScanner.setResourceLoader(resourceLoader);

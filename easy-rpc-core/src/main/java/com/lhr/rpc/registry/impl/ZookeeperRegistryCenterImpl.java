@@ -6,6 +6,7 @@ import com.lhr.rpc.extern.RpcConfig;
 import com.lhr.rpc.loadbalance.LoadBalance;
 import com.lhr.rpc.registry.RegistryCenter;
 import com.lhr.rpc.extern.JdkSPI;
+import com.lhr.rpc.serialize.Serializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -33,8 +34,10 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
     private final static String RPC_ROOT_PATH = RpcConfig.getString("zookeeper.root_path");
 
     private LoadBalance loadBalance;
+    private Serializer serializer;
     private CuratorFramework zk;
     public ZookeeperRegistryCenterImpl() {
+        serializer = JdkSPI.load(Serializer.class);
         loadBalance = JdkSPI.load(LoadBalance.class);
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(WAIT_RETRY_MSEC, MAX_RETRY);
         zk = CuratorFrameworkFactory.builder()
@@ -55,25 +58,40 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
                 log.info("[注册中心初始化] 根节点创建为 [{}]", ret);
             }
         } catch (Exception e) {
-            throw new ServiceRegistryException(e.toString(), e);
+            throw new ServiceRegistryException("尝试连接zookeeper失败", e);
         }
     }
 
     @Override
-    public void registerService(String serviceInterfaceName, String serviceImplName, int version, String host) {
+    public void registerService(Invocation invocation) {
         // easy-rpc/接口名/版本号/ip地址/实现类名
-        String path = "/" + serviceInterfaceName + "/" + version + "/" + host + "/" + serviceImplName;
+        // InterfaceName(interfaces[0].getName());
+        // InterfaceImplName(bean.getClass().getName());
+        // FallbackImplName(rpcService.fallback().getName());
+        // Versoin(rpcService.version());
+        // Host(host);
+        // WaitTime(rpcService.waitTime());
+        // RetryTimes(rpcService.retryTimes());
+        // Recover(rpcService.recover());
+        // Fallback(false);
+        // Singleton(rpcService.singleton());
+        // LimitTime(rpcService.limitTime());
+        // Threads(rpcService.threads());  12 / 17
+        String path = "/" + invocation.getInterfaceName() +
+                "/" + invocation.getVersoin() +
+                "/" + invocation.getHost() +
+                "/" + invocation.getInterfaceImplName();
         try {
             if (zk.checkExists().forPath(path) == null) {
-                String ret = zk.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).inBackground((CuratorFramework client, CuratorEvent event)->{
+                zk.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).inBackground((CuratorFramework client, CuratorEvent event)->{
                     log.info("[服务注册] 创建持久节点 [{}]", event.getPath());
+                    zk.setData().forPath(path, serializer.serialize(invocation));
                 }).forPath(path);
-
             }else {
-                log.info("[服务注册] 已有服务 [{}] 在[{}]", serviceImplName, host);
+                log.info("[服务注册] 已有服务 [{}] 在[{}]", invocation.getInterfaceImplName(), invocation.getHost());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServiceRegistryException("创建/注册 持久服务结点失败", e);
         }
     }
 
@@ -86,7 +104,25 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
                 log.info("[服务撤销] 删除持久结点 [{}]", event.getPath());
             }).forPath(path);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServiceRegistryException("删除服务结点失败", e);
+        }
+    }
+
+    @Override
+    public void updateService(Invocation invocation) {
+        String path = "/" + invocation.getInterfaceName() +
+                "/" + invocation.getVersoin() +
+                "/" + invocation.getHost() +
+                "/" + invocation.getInterfaceImplName();
+        try {
+            if (zk.checkExists().forPath(path) == null) {
+                log.info("[服务更新] 更新失败 无此持久节点 [{}]", path);
+            }else {
+                zk.setData().forPath(path, serializer.serialize(invocation));
+                log.info("[服务更新] 更新成功 [{}] 在[{}]", invocation.getInterfaceImplName(), invocation.getHost());
+            }
+        } catch (Exception e) {
+            throw new ServiceRegistryException("创建/注册 持久服务结点失败", e);
         }
     }
 
@@ -97,7 +133,7 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
                 log.info("[服务撤销] 删除所有持久结点 [{}]", event.getPath() + RPC_ROOT_PATH);
             }).forPath("/");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServiceRegistryException("删除所有结点失败", e);
         }
     }
 
@@ -107,13 +143,16 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
         String path = "/" + serviceInterfaceName + "/" + version;
         try {
             List<String> hostList = zk.getChildren().forPath(path);
+            if (hostList.isEmpty()) log.info("[服务发现] 找不到版本为 [{}] 的服务 [{}]", version, serviceInterfaceName);
             String host = loadBalance.select(hostList);
+
             String serviceImplName = zk.getChildren().forPath(path + "/" + host).get(0);
+
+            Invocation invocation = serializer.deserialize(Invocation.class, zk.getData().forPath(path + "/" + host + "/" + serviceImplName));
             log.info("[服务发现] [{}] 在 [{}]", serviceImplName, host);
-            return new Invocation(host, serviceImplName);
+            return invocation;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+            throw new ServiceRegistryException("服务发现失败", e);
         }
     }
 }

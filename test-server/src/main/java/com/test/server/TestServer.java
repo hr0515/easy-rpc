@@ -1,7 +1,7 @@
 package com.test.server;
 
 import com.lhr.rpc.BootStrapRpcServer;
-import com.lhr.rpc.proxy.RpcServiceEnable;
+import com.lhr.rpc.proxy.EnableRpcService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date: 2024-03-12 09:09
  **/
 @Component
-@RpcServiceEnable
+@EnableRpcService
 public class TestServer {
 
     public static void main(String[] args) {

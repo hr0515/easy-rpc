@@ -12,9 +12,11 @@ import com.lhr.rpc.extern.SPI;
 public interface RegistryCenter {
 
 
-    void registerService(String serviceInterfaceName, String serviceImplName, int version, String host);
+    void registerService(Invocation invocation);
 
     void unregisterService(String serviceInterfaceName, String serviceImplName);
+
+    void updateService(Invocation invocation);
 
     void unregisterAllService();
 

@@ -60,9 +60,4 @@ public class SocketServerImpl implements Server {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void heartReceive() {
-
-    }
 }

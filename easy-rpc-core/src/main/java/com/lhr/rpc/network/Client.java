@@ -5,8 +5,5 @@ import com.lhr.rpc.extern.SPI;
 
 @SPI
 public interface Client {
-
-
     Object send(Invocation invocation);
-    Object heartSend(Invocation invocation);
 }

@@ -10,6 +10,9 @@
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -29,7 +32,9 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -56,6 +61,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="379" y="29" width="946" height="982" key="CommitChangelistDialog2" timestamp="1710773398930">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="379" y="29" width="946" height="982" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1710773398930" />
     <state width="1464" height="232" key="GridCell.Tab.0.bottom" timestamp="1710765448356">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

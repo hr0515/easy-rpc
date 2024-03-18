@@ -15,9 +15,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface RpcWired {
 
-    /**
-     * Service version, default value is empty string
-     */
     int version() default 0;
 
 }

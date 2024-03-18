@@ -35,9 +35,4 @@ public class SocketClientImpl implements Client {
         }
         return o;
     }
-
-    @Override
-    public Object heartSend(Invocation invocation) {
-        return null;
-    }
 }

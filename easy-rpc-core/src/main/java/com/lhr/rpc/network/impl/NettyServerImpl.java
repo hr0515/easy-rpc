@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @description:
@@ -33,6 +33,10 @@ public class NettyServerImpl implements Server {
     private static final int serverPort = RpcConfig.getInt("server.port");
     public ChannelHandlerContext ctx;
     public Invocation invocation;
+
+    private static class Pool {
+        public static final ConcurrentHashMap<String, Object> CACHE_SERVICE = new ConcurrentHashMap<>();
+    }
 
     public NettyServerImpl() {
         int readTimes = RpcConfig.getInt("netty.server_max_read");
@@ -104,11 +108,30 @@ public class NettyServerImpl implements Server {
     @Override
     public void receive() {
         try {
-            Class<?> clazz = Class.forName(invocation.getInterfaceImplName());
-            Method method = clazz.getMethod(invocation.getMethodName(), invocation.getMethodParamTypes());
+            Class<?> clazz;
+            if (invocation.isFallback()) {
+                clazz = Class.forName(invocation.getFallbackImplName());
+            }else {
+                clazz = Class.forName(invocation.getInterfaceImplName());
+            }
 
-            invocation.setRet(method.invoke(clazz.newInstance(), invocation.getMethodParams()));
+            Object o;
+            if (invocation.isSingleton()) {
+                o = Pool.CACHE_SERVICE.get(clazz.getName());
+                if (o == null) {
+                    o = clazz.newInstance();
+                    Pool.CACHE_SERVICE.put(clazz.getName(), o);
+                }
+            }else {
+                o = clazz.newInstance();
+            }
 
+            try {
+                Method method = clazz.getMethod(invocation.getMethodName(), invocation.getMethodParamTypes());
+                invocation.setRet(method.invoke(o, invocation.getMethodParams()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             ctx.writeAndFlush(invocation).addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {
                     log.info("[Netty] 服务端 写回数据成功 [{}]", invocation.getRet());
@@ -117,13 +140,9 @@ public class NettyServerImpl implements Server {
                     log.error("[Netty] 服务端 写回数据失败", future.cause());
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void heartReceive() {
-
     }
 }

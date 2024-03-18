@@ -5,8 +5,10 @@ import com.lhr.rpc.entity.Invocation;
 import com.lhr.rpc.exception.ServiceRegistryException;
 import com.lhr.rpc.extern.RpcConfig;
 import com.lhr.rpc.network.Client;
+import com.lhr.rpc.network.impl.NettyClientImpl;
 import com.lhr.rpc.registry.RegistryCenter;
 import com.lhr.rpc.extern.JdkSPI;
+import com.lhr.rpc.tolerate.Tolerate;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -36,8 +38,10 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
     private Client client;
     private RegistryCenter registryCenter;
     private static final int serverPort = RpcConfig.getInt("server.port");
+    private final Tolerate tolerate;
 
     public CunstomBeanPostProcessor() {
+        tolerate = JdkSPI.load(Tolerate.class);
         registryCenter = JdkSPI.load(RegistryCenter.class);
         client = JdkSPI.load(Client.class);
     }
@@ -54,8 +58,22 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
             if (interfaces.length == 1) {
                 RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
                 String host = InetAddress.getLocalHost().getHostAddress() + ":" + serverPort;
-                registryCenter.registerService(interfaces[0].getName(), bean.getClass().getName(), rpcService.version(), host);
-            }else {
+
+                Invocation invocation = new Invocation();
+                invocation.setInterfaceName(interfaces[0].getName());
+                invocation.setInterfaceImplName(bean.getClass().getName());
+                invocation.setFallbackImplName(rpcService.fallback().getName());
+                invocation.setVersoin(rpcService.version());
+                invocation.setHost(host);
+                invocation.setWaitTime(rpcService.waitTime());
+                invocation.setRetryTimes(rpcService.retryTimes());
+                invocation.setRecover(rpcService.recover());
+                invocation.setFallback(false);
+                invocation.setSingleton(rpcService.singleton());
+                invocation.setLimitTime(rpcService.limitTime());
+                invocation.setThreads(rpcService.threads());  // 12 / 17
+                registryCenter.registerService(invocation);
+            } else {
                 throw new ServiceRegistryException("[服务注册] 注册失败 服务仅允许有一个父接口");
             }
         }
@@ -70,13 +88,39 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
             RpcWired rpcWired = declaredField.getAnnotation(RpcWired.class);  //
             if (rpcWired != null) {
                 Class<?> clazz = declaredField.getType();
-                Invocation serviceInfo = registryCenter.lookupService(clazz.getName(), rpcWired.version());
-                log.info("为 [{}] 增加动态代理 [{}] 为 [{}]", bean.getClass().getName(), clazz.getName(), serviceInfo.getInterfaceImplName());
+                // InterfaceName(interfaces[0].getName());
+                // InterfaceImplName(bean.getClass().getName());
+                // FallbackImplName(rpcService.fallback().getName());
+                // Versoin(rpcService.version());
+                // Host(host);
+                // WaitTime(rpcService.waitTime());
+                // RetryTimes(rpcService.retryTimes());
+                // Recover(rpcService.recover());
+                // Fallback(false);
+                // Singleton(rpcService.singleton());
+                // LimitTime(rpcService.limitTime());
+                // Threads(rpcService.threads());  12 / 17
+
                 Object o = Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, (Object proxy, Method method, Object[] args) -> {
-                    Invocation invocation = new Invocation(clazz.getName(), rpcWired.version(), method.getName(), method.getParameterTypes(), args);
-                    invocation.setHost(serviceInfo.getHost());
-                    invocation.setInterfaceImplName(serviceInfo.getInterfaceImplName());
-                    return client.send(invocation);
+                    // 就剩这仨了
+                    Invocation invocation = registryCenter.lookupService(clazz.getName(), rpcWired.version());
+                    log.info("为 [{}] 增加动态代理 [{}] 为 [{}]", bean.getClass().getName(), clazz.getName(), invocation.getInterfaceImplName());
+                    invocation.setMethodName(method.getName());
+                    invocation.setMethodParamTypes(method.getParameterTypes());
+                    invocation.setMethodParams(args);
+                    invocation.setCurrentTimes(0);  // 16 / 17 还剩一个 setRet 在服务端设置的
+                    int i = NettyClientImpl.NettySingletonPool.safeClearFutures();// 每次send之前 清空 请求
+                    // log.info("[初始化] 清理上次调用异步Future数 [{}] 个", i);
+                    int i1 = NettyClientImpl.NettySingletonPool.safeClearConnections();
+                    // log.info("[初始化] 清理上次调用Netty连接数 [{}] 个", i1);
+                    tolerate.initialInterruptFlag();
+
+                    if (invocation.getLimitTime() == 0 || invocation.getThreads() == 0) {
+                        return client.send(invocation);
+                    }else {
+                        // 权限接管给 限流容错
+                        return tolerate.enableRateLimiting(invocation, invParam -> client.send(invParam));
+                    }
                 });
                 declaredField.setAccessible(true);
                 declaredField.set(bean, o);

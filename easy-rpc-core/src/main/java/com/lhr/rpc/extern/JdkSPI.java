@@ -25,7 +25,7 @@ public class JdkSPI {
             // SPI 注解修饰 + 接口 条件下
             s = clazz.cast(SPISingletonPool.CACHE.get(clazz));
             if (s != null) {
-                log.info("发现SPI [单例池] [{}] 实现类为 [{}]", clazz.getName(), s.getClass().getName());
+//                log.info("[SPI] [单例池] [{}] 实现类为 [{}]", clazz.getName(), s.getClass().getName());
                 return s;
             }else {
                 synchronized (SPISingletonPool.CACHE) {
@@ -36,13 +36,15 @@ public class JdkSPI {
                         if (iterator.hasNext()) {
                             s = serviceLoader.iterator().next();
                             SPISingletonPool.CACHE.put(clazz, s);
-                            log.info("发现SPI [{}] 实现类为 [{}]", clazz.getName(), s.getClass().getName());
+                            log.info("[SPI] [{}] 实现类为 [{}]", clazz.getName(), s.getClass().getName());
                         }else {
-                            log.info("发现SPI [未处理] [{}] 实现类为 [null]", clazz.getName());
+                            log.info("[SPI] [未处理] [{}] 实现类为 [null]", clazz.getName());
                         }
                     }
                 }
             }
+        }else {
+            log.info("[SPI] [注解未标注] 或 [非接口]");
         }
         return s;
     }
