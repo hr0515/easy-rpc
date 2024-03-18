@@ -6,17 +6,17 @@
 
 ### 包结构
 
-| 包          | 接口                                        |                                                              |
-| ----------- | ------------------------------------------- | ------------------------------------------------------------ |
-| entity      |                                             | 封装Invocation类作为传递对象，共15个字段                     |
-| exception   |                                             | 实现自定义异常处理，总体继承了`RunTimeException`             |
-| extern      | `@SPI`                                      | 封装了SPI的工具类，封装对外部资源文件的读取                  |
-| loadbalance | `LoadBalance`                               | 实现负载均衡，分别实现随机与一致哈希                         |
-| network     | `Client`|`Server`                           | 完成客户端和服务端的封装，分别需要实现`send`、`receive`      |
-| proxy       | `@EnableRpcService`|`RpcService`|`RpcWired` | 将实体类的注入、初始化问题交给IOC容器，并支持注解进行服务的注册与代理调用 |
-| registry    | `RegistryCenter`                            | 注册中心，封装了Zk的具体实现，包含服务注册、服务更新、撤销所有服务、服务发现 |
-| serialize   | `Serializer`                                | 用Kryo实现了序列化与反序列化，并实现Netty传输的解码器与编码器 |
-| tolerate    | `Tolerate`|`TolerateHandler`                | 实现容错策略，包含请求重试、熔断降级、限流；`TolerateHandler`函数式接口，传递`send`函数用 |
+| 包          | 接口                                       |                                                              |
+| ----------- | ------------------------------------------ | ------------------------------------------------------------ |
+| entity      |                                            | 封装Invocation类作为传递对象，共15个字段                     |
+| exception   |                                            | 实现自定义异常处理，总体继承了`RunTimeException`             |
+| extern      | `@SPI`                                     | 封装了SPI的工具类，封装对外部资源文件的读取                  |
+| loadbalance | `LoadBalance`                              | 实现负载均衡，分别实现随机与一致哈希                         |
+| network     | `Client` `Server`                          | 完成客户端和服务端的封装，分别需要实现`send`、`receive`      |
+| proxy       | `@EnableRpcService` RpcService` `RpcWired` | 将实体类的注入、初始化问题交给IOC容器，并支持注解进行服务的注册与代理调用 |
+| registry    | `RegistryCenter`                           | 注册中心，封装了Zk的具体实现，包含服务注册、服务更新、撤销所有服务、服务发现 |
+| serialize   | `Serializer`                               | 用Kryo实现了序列化与反序列化，并实现Netty传输的解码器与编码器 |
+| tolerate    | `Tolerate` `TolerateHandler`               | 实现容错策略，包含请求重试、熔断降级、限流；`TolerateHandler`函数式接口，传递`send`函数用 |
 
 ### 要点说明
 
