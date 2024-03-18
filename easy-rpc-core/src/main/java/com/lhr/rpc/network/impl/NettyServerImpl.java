@@ -108,6 +108,7 @@ public class NettyServerImpl implements Server {
     @Override
     public void receive() {
         try {
+            String DEFAULT_TYPE = "com.lhr.rpc.tolerate.DefaultType";
             Class<?> clazz;
             if (invocation.isFallback()) {
                 clazz = Class.forName(invocation.getFallbackImplName());
@@ -127,8 +128,12 @@ public class NettyServerImpl implements Server {
             }
 
             try {
-                Method method = clazz.getMethod(invocation.getMethodName(), invocation.getMethodParamTypes());
-                invocation.setRet(method.invoke(o, invocation.getMethodParams()));
+                if (!clazz.getName().equals(DEFAULT_TYPE)) {
+                    Method method = clazz.getMethod(invocation.getMethodName(), invocation.getMethodParamTypes());
+                    invocation.setRet(method.invoke(o, invocation.getMethodParams()));
+                }else {
+                    invocation.setRet(null); // 默认托底类 返回
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -18,7 +18,7 @@ public interface Tolerate {
     // 降级 or 熔断
     void enableCircuitBreaker(Invocation invocation, TolerateHandler handler) throws ExecutionException, InterruptedException;
 
-    Object enableRateLimiting(Invocation invocation, TolerateHandler handler);
+    Object enableRateLimiting(Invocation invocation, int limitTime, int threads, TolerateHandler handler);
 
     // 强制打断 正在执行 send 函数的循环
     void interruptTryLoop();

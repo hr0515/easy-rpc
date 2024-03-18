@@ -182,21 +182,15 @@ public Object send(Invocation invocation) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-> 
+#### 感谢
 
 我读了很多的手写Rpc框架的源码，认识到自己的不足。为了能让自己更好的理解rpc的调用流程，以及更直观的执行各个流程。所以有了easy-rpc。
 
-以下是我看过或我借鉴过的开源仓库，大家可以通过以下扩展自己，同时感谢以下大佬的贡献：
+以下是我看过或我借鉴过的开源仓库，同时感谢大佬的贡献：
+
+[apache/dubbo: The java implementation of Apache Dubbo. An RPC and microservice framework.](https://github.com/apache/dubbo)
+
+[Snailclimb/guide-rpc-framework: A custom RPC framework implemented by Netty+Kyro+Zookeeper.](https://github.com/Snailclimb/guide-rpc-framework)
+
+[ggzh1/Xhy-Rpc.](https://github.com/ggzh1/Xhy-Rpc)
 

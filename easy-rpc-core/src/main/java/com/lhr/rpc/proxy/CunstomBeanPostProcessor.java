@@ -15,7 +15,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -39,6 +38,9 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
     private RegistryCenter registryCenter;
     private static final int serverPort = RpcConfig.getInt("server.port");
     private final Tolerate tolerate;
+    private final int limitTime = RpcConfig.getInt("tolerate.rate_limiting.limit_time");
+    private final int threads = RpcConfig.getInt("tolerate.rate_limiting.threads");
+
 
     public CunstomBeanPostProcessor() {
         tolerate = JdkSPI.load(Tolerate.class);
@@ -69,9 +71,7 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
                 invocation.setRetryTimes(rpcService.retryTimes());
                 invocation.setRecover(rpcService.recover());
                 invocation.setFallback(false);
-                invocation.setSingleton(rpcService.singleton());
-                invocation.setLimitTime(rpcService.limitTime());
-                invocation.setThreads(rpcService.threads());  // 12 / 17
+                invocation.setSingleton(rpcService.singleton()); // 10 / 15
                 registryCenter.registerService(invocation);
             } else {
                 throw new ServiceRegistryException("[服务注册] 注册失败 服务仅允许有一个父接口");
@@ -97,29 +97,30 @@ public class CunstomBeanPostProcessor implements BeanPostProcessor {
                 // RetryTimes(rpcService.retryTimes());
                 // Recover(rpcService.recover());
                 // Fallback(false);
-                // Singleton(rpcService.singleton());
-                // LimitTime(rpcService.limitTime());
-                // Threads(rpcService.threads());  12 / 17
+                // Singleton(rpcService.singleton());  10 / 15
 
                 Object o = Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, (Object proxy, Method method, Object[] args) -> {
                     // 就剩这仨了
-                    Invocation invocation = registryCenter.lookupService(clazz.getName(), rpcWired.version());
+                    Invocation invo = new Invocation();
+                    invo.setInterfaceName(clazz.getName());
+                    invo.setMethodName(method.getName());
+                    invo.setMethodParamTypes(method.getParameterTypes());
+                    invo.setMethodParams(args);
+                    invo.setCurrentTimes(0);  // 14 / 15 还剩一个 setRet 在服务端设置的
+                    Invocation invocation = registryCenter.lookupService(invo, rpcWired.version());
                     log.info("为 [{}] 增加动态代理 [{}] 为 [{}]", bean.getClass().getName(), clazz.getName(), invocation.getInterfaceImplName());
-                    invocation.setMethodName(method.getName());
-                    invocation.setMethodParamTypes(method.getParameterTypes());
-                    invocation.setMethodParams(args);
-                    invocation.setCurrentTimes(0);  // 16 / 17 还剩一个 setRet 在服务端设置的
+
                     int i = NettyClientImpl.NettySingletonPool.safeClearFutures();// 每次send之前 清空 请求
                     // log.info("[初始化] 清理上次调用异步Future数 [{}] 个", i);
                     int i1 = NettyClientImpl.NettySingletonPool.safeClearConnections();
                     // log.info("[初始化] 清理上次调用Netty连接数 [{}] 个", i1);
                     tolerate.initialInterruptFlag();
 
-                    if (invocation.getLimitTime() == 0 || invocation.getThreads() == 0) {
+                    if (limitTime == 0 || threads == 0) {
                         return client.send(invocation);
                     }else {
                         // 权限接管给 限流容错
-                        return tolerate.enableRateLimiting(invocation, invParam -> client.send(invParam));
+                        return tolerate.enableRateLimiting(invocation, limitTime, threads, invParam -> client.send(invParam));
                     }
                 });
                 declaredField.setAccessible(true);

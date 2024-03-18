@@ -20,6 +20,6 @@ public interface RegistryCenter {
 
     void unregisterAllService();
 
-    Invocation lookupService(String serviceInterfaceName, int version);
+    Invocation lookupService(Invocation invocation, int version);
 
 }

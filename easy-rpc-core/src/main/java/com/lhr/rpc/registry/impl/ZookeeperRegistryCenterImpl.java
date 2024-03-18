@@ -138,19 +138,23 @@ public class ZookeeperRegistryCenterImpl implements RegistryCenter {
     }
 
     @Override
-    public Invocation lookupService(String serviceInterfaceName, int version) {
+    public Invocation lookupService(Invocation invocation, int version) {
         // easy-rpc/接口名/版本号/ip地址/实现类名
-        String path = "/" + serviceInterfaceName + "/" + version;
+        String path = "/" + invocation.getInterfaceName() + "/" + version;
         try {
             List<String> hostList = zk.getChildren().forPath(path);
-            if (hostList.isEmpty()) log.info("[服务发现] 找不到版本为 [{}] 的服务 [{}]", version, serviceInterfaceName);
-            String host = loadBalance.select(hostList);
+            if (hostList.isEmpty()) log.info("[服务发现] 找不到版本为 [{}] 的服务 [{}]", version, invocation.getInterfaceImplName());
+            String host = loadBalance.select(hostList, invocation, version);
 
             String serviceImplName = zk.getChildren().forPath(path + "/" + host).get(0);
 
-            Invocation invocation = serializer.deserialize(Invocation.class, zk.getData().forPath(path + "/" + host + "/" + serviceImplName));
+            Invocation invo = serializer.deserialize(Invocation.class, zk.getData().forPath(path + "/" + host + "/" + serviceImplName));
+            invo.setMethodName(invocation.getMethodName());
+            invo.setMethodParamTypes(invocation.getMethodParamTypes());
+            invo.setMethodParams(invocation.getMethodParams());
+            invo.setCurrentTimes(invocation.getCurrentTimes());  // 14 / 15 还剩一个 setRet 在服务端设置的
             log.info("[服务发现] [{}] 在 [{}]", serviceImplName, host);
-            return invocation;
+            return invo;
         } catch (Exception e) {
             throw new ServiceRegistryException("服务发现失败", e);
         }

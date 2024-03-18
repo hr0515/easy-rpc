@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lhr.rpc</groupId>
-    <artifactId>easyblog-rpc</artifactId>
+    <artifactId>easy-rpc</artifactId>
     <packaging>pom</packaging>
-    <version>2.0</version>
+    <version>3.0</version>
     <properties>
         <spring.version>5.2.7.RELEASE</spring.version>
         <slf4j.version>1.7.25</slf4j.version>

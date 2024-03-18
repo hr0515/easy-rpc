@@ -9,11 +9,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="test-server" />
         <module name="easy-rpc-core" />
-        <module name="test-client" />
         <module name="test-server-interface" />
+        <module name="test-client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="easy-rpc" target="1.8" />
       <module name="easy-rpc-core" target="1.8" />
       <module name="easyblog-rpc" target="1.8" />
       <module name="test-client" target="1.8" />

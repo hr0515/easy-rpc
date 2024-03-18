@@ -1,7 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8dde3dac-254d-497e-b80f-6826ca27038f" name="Default Changelist" comment="" />
+    <list default="true" id="8dde3dac-254d-497e-b80f-6826ca27038f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/loadbalance/impl/ConsistentHashLoadBalance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easy-rpc.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/FallbackHelloServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/FallbackHelloServiceImpl1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/FallbackHelloServiceImpl3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/FallbackHelloServiceImpl4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/HelloServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/HelloServiceImpl1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/HelloServiceImpl3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-server/src/main/java/com/test/server/serviceImpl/HelloServiceImpl4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/easy-rpc-core.iml" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/easy-rpc-core.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/BootStrapRpcServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/BootStrapRpcServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/entity/Invocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/entity/Invocation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/loadbalance/LoadBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/loadbalance/LoadBalance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/loadbalance/impl/RandomLoadBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/loadbalance/impl/RandomLoadBalance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/network/impl/NettyClientImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/network/impl/NettyClientImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/network/impl/NettyServerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/network/impl/NettyServerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/proxy/CunstomBeanPostProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/proxy/CunstomBeanPostProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/proxy/RpcService.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/proxy/RpcService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/registry/RegistryCenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/registry/RegistryCenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/registry/impl/ZookeeperRegistryCenterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/registry/impl/ZookeeperRegistryCenterImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/serialize/impl/NettyKryoInvocationEncodeSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/serialize/impl/NettyKryoInvocationEncodeSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/DefaultType.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/DefaultType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/Tolerate.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/Tolerate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/TolerateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/java/com/lhr/rpc/tolerate/TolerateImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/resources/META-INF/services/com.lhr.rpc.loadbalance.LoadBalance" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/resources/META-INF/services/com.lhr.rpc.loadbalance.LoadBalance" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easy-rpc-core/src/main/resources/rpc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/easy-rpc-core/src/main/resources/rpc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easyblog-rpc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/easyblog-rpc.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test-client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-client/src/main/java/com/test/client/TestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/test-client/src/main/java/com/test/client/TestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-client/test-client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/test-client/test-client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-server-interface/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test-server-interface/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-server-interface/test-server-interface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/test-server-interface/test-server-interface.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-server/test-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/test-server/test-server.iml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,11 +63,19 @@
         <option name="userSettingsFile" value="D:\Environment\apache-maven-3.8.2\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="2drTfPsRtq4j8rMcJtW9MrEd4QP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -54,17 +104,42 @@
       <option name="presentableId" value="Default" />
       <updated>1710765299458</updated>
       <workItem from="1710765304016" duration="98000" />
+      <workItem from="1710773217749" duration="866000" />
     </task>
+    <task id="LOCAL-00001" summary="Add CircuitBreaker &amp; Fallback">
+      <created>1710773536240</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1710773536240</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Add CircuitBreaker &amp; Fallback" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add CircuitBreaker &amp; Fallback" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="379" y="29" width="946" height="982" key="CommitChangelistDialog2" timestamp="1710773398930">
+    <state x="430" y="84" width="946" height="817" key="CommitChangelistDialog2" timestamp="1710774107776">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="379" y="29" width="946" height="982" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1710773398930" />
+    <state x="430" y="84" width="946" height="817" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1710774107776" />
     <state width="1464" height="232" key="GridCell.Tab.0.bottom" timestamp="1710765448356">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -85,6 +160,10 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="270" y="114" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1710765404995" />
+    <state x="552" y="261" key="Vcs.Push.Dialog.v2" timestamp="1710773543654">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="552" y="261" key="Vcs.Push.Dialog.v2/0.0.1920.1050@0.0.1920.1050" timestamp="1710773543654" />
     <state x="566" y="326" width="1101" height="724" key="find.popup" timestamp="1710765429685">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

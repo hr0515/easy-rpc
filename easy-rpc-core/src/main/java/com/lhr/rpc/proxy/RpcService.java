@@ -29,8 +29,4 @@ public @interface RpcService {
 
     boolean singleton() default true;  // 是否为单例加载
 
-    int limitTime() default 0; // 限流时间阈值  limitTime 与 threads 任一为0 则关闭限流
-
-    int threads() default 0; // 在 阈值 区间内的最大线程数
-
 }

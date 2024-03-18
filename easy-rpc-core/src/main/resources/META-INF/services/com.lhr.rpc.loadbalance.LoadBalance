@@ -1,1 +1,1 @@
-com.lhr.rpc.loadbalance.impl.RandomLoadBalance
+com.lhr.rpc.loadbalance.impl.ConsistentHashLoadBalance

@@ -1,5 +1,6 @@
 package com.lhr.rpc.loadbalance.impl;
 
+import com.lhr.rpc.entity.Invocation;
 import com.lhr.rpc.loadbalance.LoadBalance;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Random;
  **/
 public class RandomLoadBalance implements LoadBalance {
     @Override
-    public String select(List<String> hostList) {
+    public String select(List<String> hostList, Invocation invocation, int version) {
         return hostList.get(new Random().nextInt(hostList.size()));
     }
 }

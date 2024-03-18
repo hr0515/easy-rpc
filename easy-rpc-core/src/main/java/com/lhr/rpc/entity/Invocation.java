@@ -25,15 +25,17 @@ public class Invocation implements Serializable {
     private int recover;                    // 13 0 为不恢复 为降级  x秒后恢复状态
     private boolean isFallback;             // 14 是否执行 fallback
     private boolean singleton;              // 15 是否 单例调用
-    private int limitTime;                  // 16 限流阈值
-    private int threads;                    // 17 阈值 范围内 运行执行的最大线程数
 
-    // Netty 序列化时  kryo 要求 必须有无参构造函数
+    // 序列化时  kryo 要求 必须有无参构造函数
     public Invocation() {
     }
 
     public String getKey() {
         return this.getHost() + this.getInterfaceImplName() + this.getCurrentTimes();
+    }
+
+    public String getHashKey(String host, int version) {
+        return host + version + this.getMethodName();
     }
 
     public void addCurrentTimes() {
@@ -161,25 +163,9 @@ public class Invocation implements Serializable {
         this.singleton = singleton;
     }
 
-    public int getLimitTime() {
-        return limitTime;
-    }
-
-    public void setLimitTime(int limitTime) {
-        this.limitTime = limitTime;
-    }
-
-    public int getThreads() {
-        return threads;
-    }
-
-    public void setThreads(int threads) {
-        this.threads = threads;
-    }
-
     @Override
     public String toString() {
-        return "Invocation{" +
+        return "Invocation {" +
                 "\n 接口服务名 interfaceName='" + interfaceName + '\'' +
                 "\n 版本号 versoin=" + versoin +
                 "\n 方法名 methodName='" + methodName + '\'' +

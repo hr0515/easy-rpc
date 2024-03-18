@@ -116,11 +116,8 @@ public class NettyClientImpl implements Client {
                                     log.info("[Netty] [心跳包] 客户端 [{}:{}] 接受", InetAddress.getLocalHost().getHostAddress(), serverPort);
                                     return;
                                 } else {
-//                                    System.out.println("触发中断 提前完成：" + invocation.getRet());
                                     tolerate.interruptTryLoop();
                                 }
-
-                                // 记录它的 返回结果 如果出问题 这里是一直都不会被触发的   如果出问题 那只能是托底数据在触发
                                 NettySingletonPool.FUTURE_BACK.get(invocation.getKey()).complete(invocation);
                                 log.info("[Netty] 客户端 读取 服务端写回数据 [{}]", ((Invocation) msg).getRet());
                             }
@@ -195,7 +192,7 @@ public class NettyClientImpl implements Client {
                 CompletableFuture<Invocation> lastFuture = NettySingletonPool.FUTURE_BACK.get(keys.get(0)); // 排第一个的是最先返回的
                 return lastFuture.get().getRet();
             }
-            return null; //FIXME: 这里其实不应该出现 null的情况  但是这里还必须这样写（语法要求） 目前没测出来它输出过 null
+            return null; // 有熔断或降级 且 没有设置相应的 fallback 实现类 会返回null
         } catch (ExecutionException | InterruptedException e) {
             Throwable cause = e.getCause();
             throw new ClientException("[Netty] 客户端 执行ExecutionException或中断InterruptedException异常", cause);

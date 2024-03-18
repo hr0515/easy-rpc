@@ -15,12 +15,10 @@ import io.netty.handler.codec.MessageToByteEncoder;
 public class NettyKryoInvocationEncodeSerializer extends MessageToByteEncoder<Invocation> {
 
     Serializer serializer;
-
     public NettyKryoInvocationEncodeSerializer() {
         super();
         serializer = JdkSPI.load(Serializer.class);
     }
-
     @Override
     protected void encode(ChannelHandlerContext ctx, Invocation invocation, ByteBuf byteBuf) throws Exception {
         byte[] bytes = serializer.serialize(invocation);
