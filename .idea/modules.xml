@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/easy-rpc-core/easy-rpc-core.iml" filepath="$PROJECT_DIR$/easy-rpc-core/easy-rpc-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easyblog-rpc.iml" filepath="$PROJECT_DIR$/easyblog-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-client/test-client.iml" filepath="$PROJECT_DIR$/test-client/test-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-server/test-server.iml" filepath="$PROJECT_DIR$/test-server/test-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-server-interface/test-server-interface.iml" filepath="$PROJECT_DIR$/test-server-interface/test-server-interface.iml" />
+    </modules>
+  </component>
+</project>

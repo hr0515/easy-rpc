@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lhr.rpc</groupId>
+    <artifactId>easyblog-rpc</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <properties>
+        <spring.version>5.2.7.RELEASE</spring.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <curator.version>4.0.0</curator.version>
+        <netty.version>4.1.42.Final</netty.version>
+        <protobuf.version>3.6.1</protobuf.version>
+        <kryo.version>4.0.2</kryo.version>
+    </properties>
+    <modules>
+        <module>easy-rpc-core</module>
+        <module>test-client</module>
+        <module>test-server</module>
+        <module>test-server-interface</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- log -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
